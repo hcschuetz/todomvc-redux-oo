@@ -16,9 +16,9 @@ class MainSection extends Component {
   }
 
   handleClearCompleted() {
-    const atLeastOneCompleted = this.props.todos.some(todo => todo.completed);
+    const atLeastOneCompleted = this.props.todos.items.some(todo => todo.completed);
     if (atLeastOneCompleted) {
-      this.props.actions.clearCompleted();
+      this.props.dispatch(this.props.todos.clearCompletedAction());
     }
   }
 
@@ -27,13 +27,13 @@ class MainSection extends Component {
   }
 
   renderToggleAll(completedCount) {
-    const { todos, actions } = this.props;
-    if (todos.length > 0) {
+    const { todos, dispatch } = this.props;
+    if (todos.items.length > 0) {
       return (
         <input className="toggle-all"
                type="checkbox"
-               checked={completedCount === todos.length}
-               onChange={actions.completeAll} />
+               checked={completedCount === todos.items.length}
+               onChange={() => dispatch(todos.completeAllAction())} />
       );
     }
   }
@@ -41,9 +41,9 @@ class MainSection extends Component {
   renderFooter(completedCount) {
     const { todos } = this.props;
     const { filter } = this.state;
-    const activeCount = todos.length - completedCount;
+    const activeCount = todos.items.length - completedCount;
 
-    if (todos.length) {
+    if (todos.items.length) {
       return (
         <Footer completedCount={completedCount}
                 activeCount={activeCount}
@@ -55,11 +55,11 @@ class MainSection extends Component {
   }
 
   render() {
-    const { todos, actions } = this.props;
+    const { todos, dispatch } = this.props;
     const { filter } = this.state;
 
-    const filteredTodos = todos.filter(TODO_FILTERS[filter]);
-    const completedCount = todos.reduce((count, todo) =>
+    const filteredTodos = todos.items.filter(TODO_FILTERS[filter]);
+    const completedCount = todos.items.reduce((count, todo) =>
       todo.completed ? count + 1 : count,
       0
     );
@@ -69,7 +69,13 @@ class MainSection extends Component {
         {this.renderToggleAll(completedCount)}
         <ul className="todo-list">
           {filteredTodos.map(todo =>
-            <TodoItem key={todo.id} todo={todo} {...actions} />
+            <TodoItem key={todo.id}
+              {...{todo, dispatch}}
+              // Deleting an item is technically an action on the list,
+              // but in the UI it is invoked from the item.  So we pass
+              // a deletion method down from list code to item UI:
+              deleteItem={() => dispatch(todos.deleteTodoAction(todo.id))}
+            />
           )}
         </ul>
         {this.renderFooter(completedCount)}
@@ -79,8 +85,8 @@ class MainSection extends Component {
 }
 
 MainSection.propTypes = {
-  todos: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  todos: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default MainSection;

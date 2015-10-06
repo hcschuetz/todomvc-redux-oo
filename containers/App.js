@@ -3,24 +3,23 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
-import * as TodoActions from '../actions/todos';
+import TodoList from '../state/TodoList';
 
 class App extends Component {
   render() {
     const { todos, dispatch } = this.props;
-    const actions = bindActionCreators(TodoActions, dispatch);
 
     return (
       <div>
-        <Header addTodo={actions.addTodo} />
-        <MainSection todos={todos} actions={actions} />
+        <Header addTodo={ text => dispatch(todos.addTodoAction(text)) } />
+        <MainSection todos={todos} dispatch={dispatch} />
       </div>
     );
   }
 }
 
 App.propTypes = {
-  todos: PropTypes.array.isRequired,
+  todos: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import todos from './todos';
+import initialState from '../state/initial';
 
 const rootReducer = combineReducers({
-  todos
+  todos: (state = initialState, action) => state.reduce(action)
 });
 
 export default rootReducer;

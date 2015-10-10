@@ -27,15 +27,15 @@ export default class TodoList extends State {
     return this.wrapAction({ type: CLEAR_COMPLETED });
   }
 
-  addItem(text) {
+  addItem(props) {
     const id = this.nextId;
     return this.withProps({
       nextId: this.nextId + 1,
       items: [
         ...this.items,
         new TodoItem({
+          ...props,
           id,
-          text,
           wrapAction: subAction => this.updateTodoAction(id, subAction),
         })
       ]
@@ -46,7 +46,7 @@ export default class TodoList extends State {
   reduce(action) {
     switch (action.type) {
     case ADD_TODO:
-      return this.addItem(action.text);
+      return this.addItem({text: action.text});
     case DELETE_TODO:
       return this.withProps({
         items: this.items.filter(todo => todo.id !== action.id)

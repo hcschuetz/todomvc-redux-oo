@@ -18,3 +18,11 @@ export class State {
 // - @actionCreator
 // - @reducer
 // - @...
+
+
+// Convert a state object with a .reducer(action) method into a standard
+// redux reducer function.  Use this method to embed OO-style redux code
+// in surrounding code expecting standard reducers.
+export function reduceFrom(initialValue) {
+  return (state = initialValue, action) => state.reduce(action);
+};

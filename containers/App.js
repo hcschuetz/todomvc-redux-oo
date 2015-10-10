@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from 'redux-undo';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
 import TodoList from '../state/TodoList';
@@ -11,18 +10,18 @@ const undoRedoStyle = active =>
 
 class App extends Component {
   render() {
-    const { todos, havePast, haveFuture, dispatch } = this.props;
+    const { undoable, todos, dispatch } = this.props;
 
     return (
       <div>
         <span>
-          <button style={undoRedoStyle(havePast)}
-            onClick={() => dispatch(ActionCreators.undo())}
+          <button style={undoRedoStyle(undoable.undoable())}
+            onClick={() => dispatch(undoable.undoAction())}
           >
             undo
           </button>
-          <button style={undoRedoStyle(haveFuture)}
-            onClick={() => dispatch(ActionCreators.redo())}
+          <button style={undoRedoStyle(undoable.redoable())}
+            onClick={() => dispatch(undoable.redoAction())}
           >
             redo
           </button>
@@ -39,11 +38,10 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps({undoableTodos: {present: todos, history: {past, future}}}) {
+function mapStateToProps({undoableTodos}) {
   return {
-    todos,
-    havePast: past.length > 0,
-    haveFuture: future.length > 0,
+    undoable: undoableTodos,
+    todos: undoableTodos.present
   };
 }
 

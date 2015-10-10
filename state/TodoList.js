@@ -1,4 +1,4 @@
-import {State} from "./utils";
+import {State} from "../utils";
 import TodoItem from "./TodoItem";
 
 // action type constants

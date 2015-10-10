@@ -1,4 +1,4 @@
-import {State} from "./utils";
+import {State} from "../utils";
 
 // action type constants
 const SET_TEXT = "SET_TEXT";

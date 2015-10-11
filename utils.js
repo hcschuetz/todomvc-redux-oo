@@ -48,6 +48,28 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
+export function action(argNames = []) {
+  return function(proto, methodName, method) {
+    Object.defineProperty(proto, methodName + "Action", {
+      value: new Function(
+        ...argNames,
+        `return this.createAction("${methodName}_aux", { ${argNames.join(", ")} });`
+      ),
+      enumerable: false,
+      configurable: false,
+      writable: false
+    });
+    Object.defineProperty(proto, methodName + "_aux", {
+      value: function(action) {
+        return this[methodName].apply(this, argNames.map(n => action[n]));
+      },
+      enumerable: false,
+      configurable: false,
+      writable: false
+    });
+  }
+}
+
 // TODO Make usage consistent for @defaults and @settable.
 
 // TODO Isnt't there some standard syntax in ES6/ES7 to add values to

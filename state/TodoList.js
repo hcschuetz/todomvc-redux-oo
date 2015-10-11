@@ -1,12 +1,5 @@
-import {State, defaults} from "../utils";
+import {State, defaults, action} from "../utils";
 import TodoItem from "./TodoItem";
-
-// action type constants
-const ADD_TODO = "ADD_TODO";
-const DELETE_TODO = "DELETE_TODO";
-const UPDATE_TODO = "UPDATE_TODO";
-const COMPLETE_ALL = "COMPLETE_ALL";
-const CLEAR_COMPLETED = "CLEAR_COMPLETED";
 
 @defaults({
   items: [],
@@ -32,26 +25,20 @@ export default class TodoList extends State {
 
   // pairs of action creators and reducers
 
-  addTodoAction(text) {
-    return this.createAction(ADD_TODO, { text });
-  }
-  [ADD_TODO]({text}) {
+  @action(["text"])
+  addTodo(text) {
     return this.addItem({text});
   }
 
-  deleteTodoAction(id) {
-    return this.createAction(DELETE_TODO, { id });
-  }
-  [DELETE_TODO]({id}) {
+  @action(["id"])
+  deleteTodo(id) {
     return this.withProps({
       items: this.items.filter(todo => todo.id !== id)
     });
   }
 
-  updateTodoAction(id, subAction) {
-    return this.createAction(UPDATE_TODO, { id, subAction });
-  }
-  [UPDATE_TODO]({id, subAction}) {
+  @action(["id", "subAction"])
+  updateTodo(id, subAction) {
     return this.withProps({
         items: this.items.map(todo =>
           todo.id === id
@@ -61,20 +48,16 @@ export default class TodoList extends State {
       });
   }
 
-  completeAllAction() {
-    return this.createAction(COMPLETE_ALL);
-  }
-  [COMPLETE_ALL]() {
+  @action()
+  completeAll() {
     const areAllMarked = this.items.every(todo => todo.completed);
     return this.withProps({
       items: this.items.map(todo => todo.setCompleted(!areAllMarked))
     });
   }
 
-  clearCompletedAction() {
-    return this.createAction(CLEAR_COMPLETED);
-  }
-  [CLEAR_COMPLETED]() {
+  @action()
+  clearCompleted() {
     return this.withProps({
       items: this.items.filter(todo => !todo.completed)
     });

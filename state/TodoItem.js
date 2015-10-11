@@ -8,10 +8,10 @@ export default class TodoItem extends State {
 
   // action creators
   setTextAction(text) {
-    return this.wrapAction({ type: SET_TEXT, text });
+    return this.createAction(SET_TEXT, { text: text });
   }
   setCompletedAction(completed) {
-    return this.wrapAction({ type: SET_COMPLETED, completed });
+    return this.createAction(SET_COMPLETED, { completed });
   }
 
   // main reducer

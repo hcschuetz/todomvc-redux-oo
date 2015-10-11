@@ -12,21 +12,22 @@ export default class TodoList extends State {
 
   // action creators
   addTodoAction(text) {
-    return this.wrapAction({ type: ADD_TODO, text });
+    return this.createAction(ADD_TODO, { text });
   }
   deleteTodoAction(id) {
-    return this.wrapAction({ type: DELETE_TODO, id });
+    return this.createAction(DELETE_TODO, { id });
   }
   updateTodoAction(id, subAction) {
-    return this.wrapAction({ type: UPDATE_TODO, id, subAction });
+    return this.createAction(UPDATE_TODO, { id, subAction });
   }
   completeAllAction() {
-    return this.wrapAction({ type: COMPLETE_ALL });
+    return this.createAction(COMPLETE_ALL);
   }
   clearCompletedAction() {
-    return this.wrapAction({ type: CLEAR_COMPLETED });
+    return this.createAction(CLEAR_COMPLETED);
   }
 
+  // helper
   addItem(props) {
     const id = this.nextId;
     return this.withProps({

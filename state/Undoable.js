@@ -11,8 +11,8 @@ const REDO = "@@undoable/REDO";
 
 export class Undoable extends State {
   // action creators
-  undoAction() { return this.wrapAction({ type: UNDO }); }
-  redoAction() { return this.wrapAction({ type: REDO }); }
+  undoAction() { return this.createAction(UNDO); }
+  redoAction() { return this.createAction(REDO); }
 
   // utility methods for the UI (for enabling/disabling the buttons)
   undoable() { return this.past != null; }

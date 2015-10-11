@@ -15,6 +15,11 @@ export class State {
     return action;
   }
 
+  createAction(type, data) {
+    return this.wrapAction({type, ...data});
+    // TODO: Or should we wrap {type, payload: data}? Also support metadata?
+  }
+
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])
       ? this // Don't clone since nothing changed.

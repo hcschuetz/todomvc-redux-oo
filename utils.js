@@ -3,6 +3,7 @@
 export class State {
   constructor(props) {
     Object.assign(this, this.constructor.defaults || EMPTY, props);
+    Object.freeze(this);
   }
 
   // wrapAction(...) is intended to extend an action with information to
@@ -17,7 +18,7 @@ export class State {
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])
       ? this // Don't clone since nothing changed.
-      : Object.assign(new this.constructor(this), newProps);
+      : new this.constructor({...this, ...newProps});
   }
 }
 

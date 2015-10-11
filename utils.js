@@ -36,6 +36,10 @@ export class State {
       : new this.constructor({...this, ...newProps});
   }
 
+  callMethod({name, args}) {
+    return this[name].apply(this, args);
+  }
+
   // This default implementation of reduce(...) uses the action type to
   // pick a reducer method.
   reduce(action) {
@@ -48,26 +52,15 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
-export function action(argNames = []) {
-  return function(proto, methodName, method) {
-    Object.defineProperty(proto, methodName + "Action", {
-      value: new Function(
-        ...argNames,
-        `return this.createAction("${methodName}_aux", { ${argNames.join(", ")} });`
-      ),
-      enumerable: false,
-      configurable: false,
-      writable: false
-    });
-    Object.defineProperty(proto, methodName + "_aux", {
-      value: function(action) {
-        return this[methodName].apply(this, argNames.map(n => action[n]));
-      },
-      enumerable: false,
-      configurable: false,
-      writable: false
-    });
-  }
+export function action(proto, methodName) {
+  Object.defineProperty(proto, methodName + "Action", {
+    value: function(...args) {
+      return this.createAction("callMethod", { name: methodName, args });
+    },
+    enumerable: false,
+    configurable: false,
+    writable: false
+  });
 }
 
 // TODO Make usage consistent for @defaults and @settable.

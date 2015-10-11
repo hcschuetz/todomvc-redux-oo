@@ -23,21 +23,21 @@ export default class TodoList extends State {
     });
   }
 
-  // pairs of action creators and reducers
+  // reducers with auto-created actions
 
-  @action(["text"])
+  @action
   addTodo(text) {
     return this.addItem({text});
   }
 
-  @action(["id"])
+  @action
   deleteTodo(id) {
     return this.withProps({
       items: this.items.filter(todo => todo.id !== id)
     });
   }
 
-  @action(["id", "subAction"])
+  @action
   updateTodo(id, subAction) {
     return this.withProps({
         items: this.items.map(todo =>
@@ -48,7 +48,7 @@ export default class TodoList extends State {
       });
   }
 
-  @action()
+  @action
   completeAll() {
     const areAllMarked = this.items.every(todo => todo.completed);
     return this.withProps({
@@ -56,7 +56,7 @@ export default class TodoList extends State {
     });
   }
 
-  @action()
+  @action
   clearCompleted() {
     return this.withProps({
       items: this.items.filter(todo => !todo.completed)

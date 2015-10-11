@@ -9,7 +9,7 @@ export default class TodoItem extends State {
   // pairs of action creators and reducers
 
   setTextAction(text) {
-    return this.createAction(SET_TEXT, { text: text });
+    return this.createAction(SET_TEXT, { text });
   }
   [SET_TEXT]({ text }) {
     return this.withProps({ text });

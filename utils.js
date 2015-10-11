@@ -44,13 +44,23 @@ export class State {
   }
 }
 
-// TODO: Provide some ES7 decorators to reduce boilerplate code in state
-// classes?
-// - @actionType
-// - @actionCreator
-// - @reducer
-// - @...
+function capitalize(s) {
+  return s[0].toUpperCase() + s.slice(1);
+}
 
+export function settable(propName) {
+  return cls => {
+    Object.defineProperty(
+      cls.prototype, `set${capitalize(propName)}Action`, {
+        value: function(val) {
+          return this.createUpdateAction({ [propName]:val });
+        },
+        enumerable: false,
+        configurable: false,
+        writable: false
+      });
+  }
+}
 
 // Convert a state object with a .reducer(action) method into a standard
 // redux reducer function.  Use this method to embed OO-style redux code

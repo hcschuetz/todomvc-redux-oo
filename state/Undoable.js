@@ -59,12 +59,18 @@ export class Undoable extends State {
     switch (action.type) {
       case UNDO: return this.undo();
       case REDO: return this.redo();
+
       // It's ugly that we have to treat redux INIT actions explicitly:
       // (Not competely sure if ignoring is the right thing to do.  Or
       // should we still send INIT actions to this.present, which will
       // probably ignore them nevertheless?)
+      //
+      // What about other actions starting with "@@"?  And is it ok that
+      // our own action names UNDO and REDO start with "@@"?  (See also
+      // https://github.com/rackt/redux/issues/186.)
       case "@@redux/INIT": return this;
       case "@@INIT": return this;
+
       default: return this.doIt(action);
     }
   }

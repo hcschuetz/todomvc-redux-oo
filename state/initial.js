@@ -1,6 +1,7 @@
 import TodoList from './TodoList';
 
 export default
-  new TodoList()
+wrapAction =>
+  new TodoList({wrapAction})
   .addItem({text: "Use Redux", completed: true})
   .addItem({text: "Use OO"})

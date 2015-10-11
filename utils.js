@@ -5,6 +5,15 @@ export class State {
       Object.assign(this, this.constructor.defaults || EMPTY, props);
   }
 
+  // wrapAction(...) is intended to extend an action with information to
+  // which part of the state the action is applicable.  To avoid clashes
+  // within the action structure this is achieved by wrapping the given
+  // action with another action.  The default implementation here leaves
+  // the action unchanged.
+  wrapAction(action) {
+    return action;
+  }
+
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])
       ? this // Don't clone since nothing changed.

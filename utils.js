@@ -48,6 +48,16 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
+// TODO Make usage consistent for @defaults and @settable.
+
+// TODO Isnt't there some standard syntax in ES6/ES7 to add values to
+// the prototype?
+export function defaults(props) {
+  return function(cls) {
+    Object.assign(cls.prototype, props);
+  }
+}
+
 export function settable(propName) {
   return cls => {
     Object.defineProperty(

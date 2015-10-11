@@ -1,4 +1,4 @@
-import {State} from "../utils";
+import {State, defaults} from "../utils";
 import TodoItem from "./TodoItem";
 
 // action type constants
@@ -8,6 +8,10 @@ const UPDATE_TODO = "UPDATE_TODO";
 const COMPLETE_ALL = "COMPLETE_ALL";
 const CLEAR_COMPLETED = "CLEAR_COMPLETED";
 
+@defaults({
+  items: [],
+  nextId: 0
+})
 export default class TodoList extends State {
 
   // helper
@@ -76,8 +80,3 @@ export default class TodoList extends State {
     });
   }
 }
-
-Object.assign(TodoList.prototype, {
-  items: [],
-  nextId: 0
-});

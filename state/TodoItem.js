@@ -1,5 +1,9 @@
-import {State, settable} from "../utils";
+import {State, defaults, settable} from "../utils";
 
+@defaults({
+  text: "",
+  completed: false
+})
 @settable("text")
 @settable("completed")
 export default class TodoItem extends State {
@@ -10,8 +14,3 @@ export default class TodoItem extends State {
   }
 
 }
-
-Object.assign(TodoItem.prototype, {
-  text: "",
-  completed: false
-});

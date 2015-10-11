@@ -4,11 +4,17 @@
 // whistles, which are not implemented here since they're unrelated to
 // the question of using an OO style.
 
-import {State} from "../utils";
+import {State, defaults} from "../utils";
 
 const UNDO = "@@undoable/UNDO";
 const REDO = "@@undoable/REDO";
 
+
+@defaults({
+  past: null,
+  present: undefined,
+  future: null
+})
 export class Undoable extends State {
   // action creators
   undoAction() { return this.createAction(UNDO); }
@@ -75,9 +81,3 @@ export class Undoable extends State {
     }
   }
 }
-
-Object.assign(Undoable.prototype, {
-  past: null,
-  present: undefined,
-  future: null
-});

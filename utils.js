@@ -25,6 +25,13 @@ export class State {
       ? this // Don't clone since nothing changed.
       : new this.constructor({...this, ...newProps});
   }
+
+  // This default implementation of reduce(...) uses the action type to
+  // pick a reducer method.
+  reduce(action) {
+    const method = this[action.type];
+    return method ? method.call(this, action) : this;
+  }
 }
 
 // TODO: Provide some ES7 decorators to reduce boilerplate code in state

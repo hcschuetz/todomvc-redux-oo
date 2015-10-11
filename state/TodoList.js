@@ -10,23 +10,6 @@ const CLEAR_COMPLETED = "CLEAR_COMPLETED";
 
 export default class TodoList extends State {
 
-  // action creators
-  addTodoAction(text) {
-    return this.createAction(ADD_TODO, { text });
-  }
-  deleteTodoAction(id) {
-    return this.createAction(DELETE_TODO, { id });
-  }
-  updateTodoAction(id, subAction) {
-    return this.createAction(UPDATE_TODO, { id, subAction });
-  }
-  completeAllAction() {
-    return this.createAction(COMPLETE_ALL);
-  }
-  clearCompletedAction() {
-    return this.createAction(CLEAR_COMPLETED);
-  }
-
   // helper
   addItem(props) {
     const id = this.nextId;
@@ -43,36 +26,54 @@ export default class TodoList extends State {
     });
   }
 
-  // main reducer
-  reduce(action) {
-    switch (action.type) {
-    case ADD_TODO:
-      return this.addItem({text: action.text});
-    case DELETE_TODO:
-      return this.withProps({
-        items: this.items.filter(todo => todo.id !== action.id)
-      });
-    case UPDATE_TODO:
-      return this.withProps({
+  // pairs of action creators and reducers
+
+  addTodoAction(text) {
+    return this.createAction(ADD_TODO, { text });
+  }
+  [ADD_TODO]({text}) {
+    return this.addItem({text});
+  }
+
+  deleteTodoAction(id) {
+    return this.createAction(DELETE_TODO, { id });
+  }
+  [DELETE_TODO]({id}) {
+    return this.withProps({
+      items: this.items.filter(todo => todo.id !== id)
+    });
+  }
+
+  updateTodoAction(id, subAction) {
+    return this.createAction(UPDATE_TODO, { id, subAction });
+  }
+  [UPDATE_TODO]({id, subAction}) {
+    return this.withProps({
         items: this.items.map(todo =>
-          todo.id === action.id
-          ? todo.reduce(action.subAction)
+          todo.id === id
+          ? todo.reduce(subAction)
           : todo
         )
       });
-    case CLEAR_COMPLETED:
-      return this.withProps({
-        items: this.items.filter(todo => !todo.completed)
-      });
-    case COMPLETE_ALL: {
-      const areAllMarked = this.items.every(todo => todo.completed);
-      return this.withProps({
-        items: this.items.map(todo => todo.setCompleted(!areAllMarked))
-      });
-    }
-    default:
-      return this;
-    }
+  }
+
+  completeAllAction() {
+    return this.createAction(COMPLETE_ALL);
+  }
+  [COMPLETE_ALL]() {
+    const areAllMarked = this.items.every(todo => todo.completed);
+    return this.withProps({
+      items: this.items.map(todo => todo.setCompleted(!areAllMarked))
+    });
+  }
+
+  clearCompletedAction() {
+    return this.createAction(CLEAR_COMPLETED);
+  }
+  [CLEAR_COMPLETED]() {
+    return this.withProps({
+      items: this.items.filter(todo => !todo.completed)
+    });
   }
 }
 

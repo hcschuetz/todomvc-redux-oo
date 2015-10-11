@@ -20,6 +20,16 @@ export class State {
     // TODO: Or should we wrap {type, payload: data}? Also support metadata?
   }
 
+  // Create an action for updating some properties.  The action directly
+  // targets the generic reducer this.withProps(...), so there is no
+  // need to implement a specific reducer (or reducer case) for these
+  // actions.  This assumes that the default reducer below (or something
+  // equivalent) is used.
+  createUpdateAction(newProps) {
+    return this.createAction("withProps", newProps);
+  }
+
+  // Return a variant of this in which the given properties are modified.
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])
       ? this // Don't clone since nothing changed.

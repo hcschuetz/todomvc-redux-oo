@@ -11,7 +11,7 @@ export default class TodoItem extends State {
 
 }
 
-TodoItem.defaults = {
+Object.assign(TodoItem.prototype, {
   text: "",
   completed: false
-};
+});

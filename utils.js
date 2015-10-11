@@ -2,7 +2,7 @@
 
 export class State {
   constructor(props) {
-    Object.assign(this, this.constructor.defaults || EMPTY, props);
+    Object.assign(this, props);
     Object.freeze(this);
   }
 

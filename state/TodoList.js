@@ -77,7 +77,7 @@ export default class TodoList extends State {
   }
 }
 
-TodoList.defaults = {
+Object.assign(TodoList.prototype, {
   items: [],
   nextId: 0
-};
+});

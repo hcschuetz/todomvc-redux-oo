@@ -76,8 +76,8 @@ export class Undoable extends State {
   }
 }
 
-Undoable.defaults = {
+Object.assign(Undoable.prototype, {
   past: null,
   present: undefined,
   future: null
-}
+});

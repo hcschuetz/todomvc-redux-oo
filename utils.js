@@ -26,7 +26,7 @@ export class State {
   // actions.  This assumes that the default reducer below (or something
   // equivalent) is used.
   createUpdateAction(newProps) {
-    return this.createAction("withProps", newProps);
+    return this.createAction("withProps", { args: [newProps] });
   }
 
   // Return a variant of this in which the given properties are modified.
@@ -36,15 +36,11 @@ export class State {
       : new this.constructor({...this, ...newProps});
   }
 
-  callMethod({name, args}) {
-    return this[name].apply(this, args);
-  }
-
   // This default implementation of reduce(...) uses the action type to
   // pick a reducer method.
-  reduce(action) {
-    const method = this[action.type];
-    return method ? method.call(this, action) : this;
+  reduce({type, args}) {
+    const method = this[type];
+    return method ? method.apply(this, args) : this;
   }
 }
 
@@ -55,7 +51,7 @@ function capitalize(s) {
 export function action(proto, methodName) {
   Object.defineProperty(proto, methodName + "Action", {
     value: function(...args) {
-      return this.createAction("callMethod", { name: methodName, args });
+      return this.createAction(methodName, { args });
     },
     enumerable: false,
     configurable: false,

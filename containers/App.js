@@ -6,7 +6,7 @@ import MainSection from '../components/MainSection';
 import TodoList from '../state/TodoList';
 
 const undoRedoStyle = active =>
-  ({ margin: "5px", color: active ? "black" : "lightgrey" });
+  ({ margin: "5px", color: active ? "grey" : "lightgrey" });
 
 class App extends Component {
   render() {
@@ -16,14 +16,24 @@ class App extends Component {
       <div>
         <span>
           <button style={undoRedoStyle(undoable.undoable())}
+            onClick={() => dispatch(undoable.undoAllAction())}
+          >
+            {'<<'}
+          </button>
+          <button style={undoRedoStyle(undoable.undoable())}
             onClick={() => dispatch(undoable.undoAction())}
           >
-            undo
+            {'<'}
           </button>
           <button style={undoRedoStyle(undoable.redoable())}
             onClick={() => dispatch(undoable.redoAction())}
           >
-            redo
+            {'>'}
+          </button>
+          <button style={undoRedoStyle(undoable.redoable())}
+            onClick={() => dispatch(undoable.redoAllAction())}
+          >
+            {'>>'}
           </button>
         </span>
         <Header addTodo={ props => dispatch(todos.addTodoAction(props)) } />

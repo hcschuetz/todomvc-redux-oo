@@ -19,6 +19,14 @@ class Undoer extends State {
   // reducer helpers (with actions)
 
   @action @updater
+  doIt(u, action) {
+    const {past, present} = this;
+    u.past = {first: present, rest: past};
+    u.present = present.reduce(action);
+    u.future = null;
+  }
+
+  @action @updater
   undo(u) {
     if (this.undoable()) {
       const {past, present, future} = this;
@@ -38,12 +46,20 @@ class Undoer extends State {
     }
   }
 
-  @action @updater
-  doIt(u, action) {
-    const {past, present} = this;
-    u.past = {first: present, rest: past};
-    u.present = present.reduce(action);
-    u.future = null;
+  @action
+  undoAll() {
+    var state = this;
+    while (state.undoable())
+      state = state.undo();
+    return state;
+  }
+
+  @action
+  redoAll() {
+    var state = this;
+    while (state.redoable())
+      state = state.redo();
+    return state;
   }
 }
 

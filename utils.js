@@ -15,20 +15,6 @@ export class State {
     return action;
   }
 
-  createAction(type, data) {
-    return this.wrapAction({type, ...data});
-    // TODO: Or should we wrap {type, payload: data}? Also support metadata?
-  }
-
-  // Create an action for updating some properties.  The action directly
-  // targets the generic reducer this.withProps(...), so there is no
-  // need to implement a specific reducer (or reducer case) for these
-  // actions.  This assumes that the default reducer below (or something
-  // equivalent) is used.
-  createUpdateAction(newProps) {
-    return this.createAction("withProps", { args: [newProps] });
-  }
-
   // Return a variant of this in which the given properties are modified.
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])
@@ -51,7 +37,7 @@ function capitalize(s) {
 export function action(proto, methodName) {
   Object.defineProperty(proto, methodName + "Action", {
     value: function(...args) {
-      return this.createAction(methodName, { args });
+      return this.wrapAction({ type: methodName, args });
     },
     enumerable: false,
     configurable: false,
@@ -74,7 +60,7 @@ export function settable(propName) {
     Object.defineProperty(
       cls.prototype, `set${capitalize(propName)}Action`, {
         value: function(val) {
-          return this.createUpdateAction({ [propName]:val });
+          return this.wrapAction({ type: "withProps", args: [{ [propName]:val }] });
         },
         enumerable: false,
         configurable: false,

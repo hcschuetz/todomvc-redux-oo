@@ -1,12 +1,7 @@
 import { combineReducers } from 'redux';
-import { undoable } from '../state/Undoable';
-import createInitialTodos from '../state/initial';
 import { reduceFrom } from '../utils';
+import initialState from '../state/initial';
 
-const initialState = undoable(createInitialTodos);
-
-const rootReducer = combineReducers({
+export default combineReducers({
   undoableTodos: reduceFrom(initialState)
 });
-
-export default rootReducer;

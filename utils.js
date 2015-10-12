@@ -15,6 +15,10 @@ export class State {
     return action;
   }
 
+  withActionWrapper(actionWrapper) {
+    return new this.constructor({...this, wrapAction: actionWrapper});
+  }
+
   // Return a variant of this in which the given properties are modified.
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])

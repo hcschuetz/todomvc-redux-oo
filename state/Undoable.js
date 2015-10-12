@@ -13,8 +13,8 @@ import {State, defaults, action, updater} from "../utils";
 })
 class Undoer extends State {
   // utility methods for the UI (for enabling/disabling the buttons)
-  undoable() { return this.past != null; }
-  redoable() { return this.future != null; }
+  isUndoable() { return this.past != null; }
+  isRedoable() { return this.future != null; }
 
   // reducer helpers (with actions)
 
@@ -28,7 +28,7 @@ class Undoer extends State {
 
   @action @updater
   undo(u) {
-    if (this.undoable()) {
+    if (this.isUndoable()) {
       const {past, present, future} = this;
       u.past = past.rest;
       u.present = past.first;
@@ -38,7 +38,7 @@ class Undoer extends State {
 
   @action @updater
   redo(u) {
-    if (this.redoable()) {
+    if (this.isRedoable()) {
       const {past, present, future} = this;
       u.past = {first: present, rest: past};
       u.present = future.first;
@@ -49,7 +49,7 @@ class Undoer extends State {
   @action
   undoAll() {
     var state = this;
-    while (state.undoable())
+    while (state.isUndoable())
       state = state.undo();
     return state;
   }
@@ -57,7 +57,7 @@ class Undoer extends State {
   @action
   redoAll() {
     var state = this;
-    while (state.redoable())
+    while (state.isRedoable())
       state = state.redo();
     return state;
   }

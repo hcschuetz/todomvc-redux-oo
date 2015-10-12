@@ -15,22 +15,22 @@ class App extends Component {
     return (
       <div>
         <span>
-          <button style={undoRedoStyle(undoable.undoable())}
+          <button style={undoRedoStyle(undoable.isUndoable())}
             onClick={() => dispatch(undoable.undoAllAction())}
           >
             {'<<'}
           </button>
-          <button style={undoRedoStyle(undoable.undoable())}
+          <button style={undoRedoStyle(undoable.isUndoable())}
             onClick={() => dispatch(undoable.undoAction())}
           >
             {'<'}
           </button>
-          <button style={undoRedoStyle(undoable.redoable())}
+          <button style={undoRedoStyle(undoable.isRedoable())}
             onClick={() => dispatch(undoable.redoAction())}
           >
             {'>'}
           </button>
-          <button style={undoRedoStyle(undoable.redoable())}
+          <button style={undoRedoStyle(undoable.isRedoable())}
             onClick={() => dispatch(undoable.redoAllAction())}
           >
             {'>>'}

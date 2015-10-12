@@ -16,9 +16,10 @@ class MainSection extends Component {
   }
 
   handleClearCompleted() {
-    const atLeastOneCompleted = this.props.todos.items.some(todo => todo.completed);
+    const { todos, dispatch } = this.props;
+    const atLeastOneCompleted = todos.items.some(todo => todo.completed);
     if (atLeastOneCompleted) {
-      this.props.dispatch(this.props.todos.clearCompletedAction());
+      dispatch(todos.clearCompletedAction());
     }
   }
 

@@ -6,6 +6,6 @@ undoable(
   actionWrapper =>
     new TodoList()
     .withActionWrapper(actionWrapper)
-    .addItem({text: "Use Redux", completed: true})
-    .addItem({text: "Use OO"})
+    .addTodo({text: "Use Redux", completed: true})
+    .addTodo({text: "Use OO"})
 )

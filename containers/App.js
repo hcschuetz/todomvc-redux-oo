@@ -26,7 +26,7 @@ class App extends Component {
             redo
           </button>
         </span>
-        <Header addTodo={ text => dispatch(todos.addTodoAction(text)) } />
+        <Header addTodo={ props => dispatch(todos.addTodoAction(props)) } />
         <MainSection todos={todos} dispatch={dispatch} />
       </div>
     );

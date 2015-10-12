@@ -7,8 +7,8 @@ import TodoItem from "./TodoItem";
 })
 export default class TodoList extends State {
 
-  // helper
-  addItem(props) {
+  @action
+  addTodo(props) {
     const id = this.nextId;
     return this.withProps({
       nextId: this.nextId + 1,
@@ -18,13 +18,6 @@ export default class TodoList extends State {
           .withActionWrapper(subAction => this.updateTodoAction(id, subAction))
       ]
     });
-  }
-
-  // reducers with auto-created actions
-
-  @action
-  addTodo(text) {
-    return this.addItem({text});
   }
 
   @action

@@ -71,7 +71,7 @@ class MainSection extends Component {
         <ul className="todo-list">
           {filteredTodos.map(todo =>
             <TodoItem key={todo.id}
-              {...{todo, dispatch}}
+              {...todo.bind(dispatch)}
               // Deleting an item is technically an action on the list,
               // but in the UI it is invoked from the item.  So we pass
               // a deletion method down from list code to item UI:

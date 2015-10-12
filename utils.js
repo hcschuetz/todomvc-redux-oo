@@ -6,6 +6,31 @@ export class State {
     Object.freeze(this);
   }
 
+  // Returns an object providing
+  // - all the values of this state object and
+  // - for each action-creator method xxxAction(...) a function xxx(...)
+  //   immediately dispatching the action.
+  // The returned object is intended for use in UI code.
+  // TODO: Any child objects should be bound recursively/lazily.
+  // TODO: Or omit children?
+  bind(dispatch) {
+    const result = {};
+    for (const key in this)
+      // TODO Just the values!  How to recognize these?
+      result[key] = this[key];
+    for (const key in this) {
+      // TODO Recognize action creators by some explicit mark instead of
+      // a naming convention?
+      if (key && key.endsWith("Action")) {
+        const value = this[key];
+        if (typeof(value) === "function")
+          result[key.substring(0, key.length - 6)] =
+          (...args) => dispatch(value.apply(this, args));
+      }
+    }
+    return result;
+  }
+
   // wrapAction(...) is intended to extend an action with information to
   // which part of the state the action is applicable.  To avoid clashes
   // within the action structure this is achieved by wrapping the given
@@ -49,7 +74,7 @@ export function action(proto, methodName) {
     value: function(...args) {
       return this.wrapAction({ type: methodName, args });
     },
-    enumerable: false,
+    enumerable: true,
     configurable: false,
     writable: false
   });
@@ -72,7 +97,7 @@ export function settable(propName) {
         value: function(val) {
           return this.wrapAction({ type: "withProps", args: [{ [propName]:val }] });
         },
-        enumerable: false,
+        enumerable: true,
         configurable: false,
         writable: false
       });

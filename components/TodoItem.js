@@ -15,22 +15,22 @@ class TodoItem extends Component {
   }
 
   handleSave(text) {
-    const {dispatch, todo, deleteItem} = this.props;
+    const {setText, deleteItem} = this.props;
     if (text.length === 0) {
       deleteItem();
     } else {
-      dispatch(todo.setTextAction(text));
+      setText(text);
     }
     this.setState({ editing: false });
   }
 
   render() {
-    const {dispatch, todo, deleteItem} = this.props;
+    const {text, completed, setCompleted, deleteItem} = this.props;
 
     let element;
     if (this.state.editing) {
       element = (
-        <TodoTextInput text={todo.text}
+        <TodoTextInput text={text}
                        editing={this.state.editing}
                        onSave={(text) => this.handleSave(text)} />
       );
@@ -39,10 +39,10 @@ class TodoItem extends Component {
         <div className="view">
           <input className="toggle"
                  type="checkbox"
-                 checked={todo.completed}
-                 onChange={() => dispatch(todo.setCompletedAction(!todo.completed))} />
+                 checked={completed}
+                 onChange={() => setCompleted(!completed)} />
           <label onDoubleClick={this.handleDoubleClick.bind(this)}>
-            {todo.text}
+            {text}
           </label>
           <button className="destroy"
                   onClick={deleteItem} />
@@ -52,7 +52,7 @@ class TodoItem extends Component {
 
     return (
       <li className={classnames({
-        completed: todo.completed,
+        completed,
         editing: this.state.editing
       })}>
         {element}
@@ -62,8 +62,10 @@ class TodoItem extends Component {
 }
 
 TodoItem.propTypes = {
-  todo: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+  completed: PropTypes.bool.isRequired,
+  setText: PropTypes.func.isRequired,
+  setCompleted: PropTypes.func.isRequired,
   deleteItem: PropTypes.func.isRequired,
 };
 

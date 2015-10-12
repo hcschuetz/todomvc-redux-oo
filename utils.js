@@ -69,6 +69,17 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
+// Decorator providing some magic allowing reducer helper functions to
+// be implemented in a terse style with very little boilerplate.
+export function updater(proto, methodName, descr) {
+  const origMethod = descr.value;
+  descr.value = function(...args) {
+    const u = {};
+    origMethod.call(this, u, ...args);
+    return this.withProps(u);
+  };
+}
+
 export function action(proto, methodName) {
   Object.defineProperty(proto, methodName + "Action", {
     value: function(...args) {

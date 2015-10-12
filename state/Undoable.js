@@ -4,7 +4,7 @@
 // whistles, which are not implemented here since they're unrelated to
 // the question of using an OO style.
 
-import {State, defaults, action} from "../utils";
+import {State, defaults, action, updater} from "../utils";
 
 @defaults({
   past: null,
@@ -18,42 +18,32 @@ class Undoer extends State {
 
   // reducer helpers (with actions)
 
-  @action
-  undo() {
+  @action @updater
+  undo(u) {
     if (this.undoable()) {
       const {past, present, future} = this;
-      return this.withProps({
-        past: past.rest,
-        present: past.first,
-        future: {first: present, rest: future}
-      });
+      u.past = past.rest;
+      u.present = past.first;
+      u.future = {first: present, rest: future};
     }
-    else
-      return this;
   }
 
-  @action
-  redo() {
+  @action @updater
+  redo(u) {
     if (this.redoable()) {
       const {past, present, future} = this;
-      return this.withProps({
-        past: {first: present, rest: past},
-        present: future.first,
-        future: future.rest
-      });
+      u.past = {first: present, rest: past};
+      u.present = future.first;
+      u.future = future.rest;
     }
-    else
-      return this;
   }
 
-  @action
-  doIt(action) {
+  @action @updater
+  doIt(u, action) {
     const {past, present} = this;
-    return this.withProps({
-      past: {first: present, rest: past},
-      present: present.reduce(action),
-      future: null
-    });
+    u.past = {first: present, rest: past};
+    u.present = present.reduce(action);
+    u.future = null;
   }
 }
 

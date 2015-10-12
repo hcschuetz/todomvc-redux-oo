@@ -30,7 +30,13 @@ export class State {
   // pick a reducer method.
   reduce({type, args}) {
     const method = this[type];
-    return method ? method.apply(this, args) : this;
+    if (method)
+      return method.apply(this, args);
+    else {
+      if (!type.startsWith("@@"))
+        console.warn(`Method '${type}' not found in object ${this}`);
+      return this;
+    }
   }
 }
 

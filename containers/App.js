@@ -14,7 +14,7 @@ class App extends Component {
         <UndoRedo undoable={undoable} actions={undoable.bindActions(dispatch)} />
         <Header addTodo={ props => dispatch(todos.addTodoAction(props)) } />
         <MainSection
-          todos={todos}
+          todos={todos.items}
           actions={todos.bindActions(dispatch)}
         />
       </div>

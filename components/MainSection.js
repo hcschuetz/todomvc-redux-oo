@@ -17,7 +17,7 @@ class MainSection extends Component {
 
   handleClearCompleted() {
     const { todos, actions } = this.props;
-    const atLeastOneCompleted = todos.items.some(todo => todo.completed);
+    const atLeastOneCompleted = todos.some(todo => todo.completed);
     if (atLeastOneCompleted) {
       actions.clearCompleted();
     }
@@ -29,11 +29,11 @@ class MainSection extends Component {
 
   renderToggleAll(completedCount) {
     const { todos, actions } = this.props;
-    if (todos.items.length > 0) {
+    if (todos.length > 0) {
       return (
         <input className="toggle-all"
                type="checkbox"
-               checked={completedCount === todos.items.length}
+               checked={completedCount === todos.length}
                onChange={actions.completeAll} />
       );
     }
@@ -42,9 +42,9 @@ class MainSection extends Component {
   renderFooter(completedCount) {
     const { todos } = this.props;
     const { filter } = this.state;
-    const activeCount = todos.items.length - completedCount;
+    const activeCount = todos.length - completedCount;
 
-    if (todos.items.length) {
+    if (todos.length) {
       return (
         <Footer completedCount={completedCount}
                 activeCount={activeCount}
@@ -59,8 +59,8 @@ class MainSection extends Component {
     const { todos, actions } = this.props;
     const { filter } = this.state;
 
-    const filteredTodos = todos.items.filter(TODO_FILTERS[filter]);
-    const completedCount = todos.items.reduce((count, todo) =>
+    const filteredTodos = todos.filter(TODO_FILTERS[filter]);
+    const completedCount = todos.reduce((count, todo) =>
       todo.completed ? count + 1 : count,
       0
     );
@@ -89,7 +89,7 @@ class MainSection extends Component {
 }
 
 MainSection.propTypes = {
-  todos: PropTypes.object.isRequired,
+  todos: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
 };
 

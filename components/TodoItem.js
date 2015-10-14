@@ -15,9 +15,9 @@ class TodoItem extends Component {
   }
 
   handleSave(text) {
-    const {setText, deleteItem} = this.props;
+    const {setText, deleteTodo} = this.props.actions;
     if (text.length === 0) {
-      deleteItem();
+      deleteTodo();
     } else {
       setText(text);
     }
@@ -25,7 +25,7 @@ class TodoItem extends Component {
   }
 
   render() {
-    const {text, completed, setCompleted, deleteItem} = this.props;
+    const {todo: {text, completed}, actions: {setCompleted, deleteTodo}} = this.props;
 
     let element;
     if (this.state.editing) {
@@ -44,8 +44,7 @@ class TodoItem extends Component {
           <label onDoubleClick={this.handleDoubleClick.bind(this)}>
             {text}
           </label>
-          <button className="destroy"
-                  onClick={deleteItem} />
+          <button className="destroy" onClick={deleteTodo} />
         </div>
       );
     }
@@ -62,11 +61,8 @@ class TodoItem extends Component {
 }
 
 TodoItem.propTypes = {
-  text: PropTypes.string.isRequired,
-  completed: PropTypes.bool.isRequired,
-  setText: PropTypes.func.isRequired,
-  setCompleted: PropTypes.func.isRequired,
-  deleteItem: PropTypes.func.isRequired,
+  todo: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
 };
 
 export default TodoItem;

@@ -6,18 +6,11 @@ export class State {
     Object.freeze(this);
   }
 
-  // Returns an object providing
-  // - all the values of this state object and
-  // - for each action-creator method xxxAction(...) a function xxx(...)
-  //   immediately dispatching the action.
-  // The returned object is intended for use in UI code.
-  // TODO: Any child objects should be bound recursively/lazily.
-  // TODO: Or omit children?
-  bind(dispatch) {
+  // Returns an object providing for each action-creator method
+  // xxxAction(...) a function xxx(...) immediately dispatching the
+  // action.  The returned object is intended for use in UI code.
+  bindActions(dispatch) {
     const result = {};
-    for (const key in this)
-      // TODO Just the values!  How to recognize these?
-      result[key] = this[key];
     for (const key in this) {
       // TODO Recognize action creators by some explicit mark instead of
       // a naming convention?

@@ -3,20 +3,17 @@ import { connect } from 'react-redux';
 import UndoRedo from '../components/UndoRedo';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
-import TodoList from '../state/TodoList';
 
 class App extends Component {
   render() {
     const { undoable, todos, dispatch } = this.props;
+    const actions = todos.bindActions(dispatch);
 
     return (
       <div>
         <UndoRedo undoable={undoable} actions={undoable.bindActions(dispatch)} />
-        <Header addTodo={ props => dispatch(todos.addTodoAction(props)) } />
-        <MainSection
-          todos={todos.items}
-          actions={todos.bindActions(dispatch)}
-        />
+        <Header addTodo={actions.addTodo} />
+        <MainSection todos={todos.items} actions={actions} />
       </div>
     );
   }

@@ -16,10 +16,9 @@ class MainSection extends Component {
   }
 
   handleClearCompleted() {
-    const { todos, actions } = this.props;
-    const atLeastOneCompleted = todos.some(todo => todo.completed);
+    const atLeastOneCompleted = this.props.todos.some(todo => todo.completed);
     if (atLeastOneCompleted) {
-      actions.clearCompleted();
+      this.props.actions.clearCompleted();
     }
   }
 
@@ -70,9 +69,7 @@ class MainSection extends Component {
         {this.renderToggleAll(completedCount)}
         <ul className="todo-list">
           {filteredTodos.map(todo =>
-            <TodoItem key={todo.id}
-              todo={todo}
-              actions={{
+            <TodoItem key={todo.id} todo={todo} {...{
                 ...actions.subActions(todo),
                 // Deleting an item is technically an action on the list,
                 // but in the UI it is invoked from the item.  So we pass
@@ -90,7 +87,7 @@ class MainSection extends Component {
 
 MainSection.propTypes = {
   todos: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 export default MainSection;

@@ -1,4 +1,4 @@
-import {State, defaults, settable} from "../utils";
+import {State, defaults, settable, updater} from "../utils";
 
 @defaults({
   text: "",
@@ -9,8 +9,9 @@ import {State, defaults, settable} from "../utils";
 export default class TodoItem extends State {
 
   // utility function
-  setCompleted(completed) {
-    return this.withProps({ completed });
+  @updater
+  setCompleted(u, completed) {
+    u.completed = completed;
   }
 
 }

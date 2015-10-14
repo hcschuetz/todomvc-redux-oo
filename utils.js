@@ -10,7 +10,11 @@ export class State {
   // xxxAction(...) a function xxx(...) immediately dispatching the
   // action.  The returned object is intended for use in UI code.
   bindActions(dispatch) {
-    const result = {};
+    const result = {
+      // Provide access to the actions for a sub-object.  (Actually this
+      // works for any instance of State, not just sub-objects.)
+      subActions: subObj => subObj.bindActions(dispatch),
+    };
     for (const key in this) {
       // TODO Recognize action creators by some explicit mark instead of
       // a naming convention?

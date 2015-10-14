@@ -15,7 +15,6 @@ class App extends Component {
         <Header addTodo={ props => dispatch(todos.addTodoAction(props)) } />
         <MainSection
           todos={todos}
-          dispatch={dispatch}
           actions={todos.bindActions(dispatch)}
         />
       </div>

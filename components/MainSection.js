@@ -56,7 +56,7 @@ class MainSection extends Component {
   }
 
   render() {
-    const { todos, dispatch, actions } = this.props;
+    const { todos, actions } = this.props;
     const { filter } = this.state;
 
     const filteredTodos = todos.items.filter(TODO_FILTERS[filter]);
@@ -73,7 +73,7 @@ class MainSection extends Component {
             <TodoItem key={todo.id}
               todo={todo}
               actions={{
-                ...todo.bindActions(dispatch),
+                ...actions.subActions(todo),
                 // Deleting an item is technically an action on the list,
                 // but in the UI it is invoked from the item.  So we pass
                 // a deletion action down from list code to item UI:
@@ -91,7 +91,6 @@ class MainSection extends Component {
 MainSection.propTypes = {
   todos: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 export default MainSection;

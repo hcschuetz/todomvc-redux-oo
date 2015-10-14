@@ -24,6 +24,7 @@ class App extends Component {
 
 App.propTypes = {
   todos: PropTypes.object.isRequired,
+  undoable: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 

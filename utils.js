@@ -42,6 +42,7 @@ export class State {
   }
 
   // Return a variant of this in which the given properties are modified.
+  @action
   withProps(newProps) {
     return Object.keys(newProps).every(key => newProps[key] === this[key])
       ? this // Don't clone since nothing changed.
@@ -103,7 +104,7 @@ export function settable(propName) {
     Object.defineProperty(
       cls.prototype, `set${capitalize(propName)}Action`, {
         value: function(val) {
-          return this.wrapAction({ type: "withProps", args: [{ [propName]:val }] });
+          return this.withPropsAction({ [propName]:val });
         },
         enumerable: true,
         configurable: false,

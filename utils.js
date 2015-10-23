@@ -104,7 +104,7 @@ export function settable(propName) {
     Object.defineProperty(
       cls.prototype, `set${capitalize(propName)}Action`, {
         value: function(val) {
-          return this.withPropsAction({ [propName]:val });
+          return this.withPropsAction({ [propName]: val });
         },
         enumerable: true,
         configurable: false,

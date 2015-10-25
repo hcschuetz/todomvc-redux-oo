@@ -57,7 +57,7 @@ export class State {
       return method.apply(this, args);
     else {
       if (!type.startsWith("@@"))
-        console.warn(`Method '${type}' not found in object ${this}`);
+        console.warn(`Method '${type}' not found in object `, this);
       return this;
     }
   }

@@ -11,7 +11,7 @@ import {State, defaults, action, updater} from "../utils";
   present: undefined,
   future: null
 })
-export class Undoable extends State {
+export default class Undoable extends State {
   // utility methods for the UI (for enabling/disabling the buttons)
   isUndoable() { return this.past != null; }
   isRedoable() { return this.future != null; }

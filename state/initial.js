@@ -1,5 +1,5 @@
 import TodoList from './TodoList';
-import { Undoable } from './Undoable';
+import Undoable from './Undoable';
 
 export default
 new Undoable({

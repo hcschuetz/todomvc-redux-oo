@@ -14,7 +14,6 @@ export default class TodoList extends State {
     u.items = [
       ...this.items,
       new TodoItem({...props, id})
-        .withActionWrapper(subAction => this.updateTodoAction(id, subAction))
     ];
   }
 

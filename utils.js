@@ -3,42 +3,16 @@
 export class State {
   constructor(props) {
     Object.assign(this, props);
-    Object.freeze(this);
+    Object.freeze(this); // ### Probably too early here!
   }
 
-  // Returns an object providing for each action-creator method
-  // xxxAction(...) a function xxx(...) immediately dispatching the
-  // action.  The returned object is intended for use in UI code.
   bindActions(dispatch) {
-    const result = {
-      // Provide access to the actions for a sub-object.  (Actually this
-      // works for any instance of State, not just sub-objects.)
-      subActions: subObj => subObj.bindActions(dispatch),
-    };
-    for (const key in this) {
-      // TODO Recognize action creators by some explicit mark instead of
-      // a naming convention?
-      if (key && key.endsWith("Action")) {
-        const value = this[key];
-        if (typeof(value) === "function")
-          result[key.substring(0, key.length - 6)] =
-          (...args) => dispatch(value.apply(this, args));
-      }
-    }
-    return result;
-  }
-
-  // wrapAction(...) is intended to extend an action with information to
-  // which part of the state the action is applicable.  To avoid clashes
-  // within the action structure this is achieved by wrapping the given
-  // action with another action.  The default implementation here leaves
-  // the action unchanged.
-  wrapAction(action) {
-    return action;
-  }
-
-  withActionWrapper(actionWrapper) {
-    return new this.constructor({...this, wrapAction: actionWrapper});
+    const bound = {};
+    for (const name in this)
+      if (name.endsWith("Action") && this[name] instanceof Function)
+        bound[name.substr(0, name.length - 6)] =
+          (...args) => dispatch(this[name](...args));
+    return bound;
   }
 
   // Return a variant of this in which the given properties are modified.
@@ -78,21 +52,23 @@ export function updater(proto, methodName, descr) {
   };
 }
 
-export function action(proto, methodName) {
-  Object.defineProperty(proto, methodName + "Action", {
-    value: function(...args) {
-      return this.wrapAction({ type: methodName, args });
-    },
+function defAction(proto, name, fn) {
+  Object.defineProperty(proto, name + "Action", {
+    value: fn,
     enumerable: true,
     configurable: false,
-    writable: false
+    writable: false,
+  });
+}
+
+export function action(proto, methodName) {
+  defAction(proto, methodName, function(...args) {
+    return { type: methodName, args };
   });
 }
 
 // TODO Make usage consistent for @defaults and @settable.
 
-// TODO Isnt't there some standard syntax in ES6/ES7 to add values to
-// the prototype?
 export function defaults(props) {
   return function(cls) {
     Object.assign(cls.prototype, props);
@@ -100,17 +76,9 @@ export function defaults(props) {
 }
 
 export function settable(propName) {
-  return cls => {
-    Object.defineProperty(
-      cls.prototype, `set${capitalize(propName)}Action`, {
-        value: function(val) {
-          return this.withPropsAction({ [propName]: val });
-        },
-        enumerable: true,
-        configurable: false,
-        writable: false
-      });
-  }
+  return cls => defAction(cls.prototype, `set${capitalize(propName)}`, function(val) {
+    return this.withPropsAction({ [propName]: val });
+  });
 }
 
 // Convert a state object with a .reducer(action) method into a standard

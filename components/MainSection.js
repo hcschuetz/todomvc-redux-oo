@@ -73,7 +73,7 @@ class MainSection extends Component {
             <TodoItem key={todo.id}
               todo={todo}
               actions={{
-                ...actions.subActions(todo),
+                ...todo.bindActions(subaction => actions.updateTodo(todo.id, subaction)),
                 // Deleting an item is technically an action on the list,
                 // but in the UI it is invoked from the item.  So we pass
                 // a deletion action down from list code to item UI:

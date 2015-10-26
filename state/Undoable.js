@@ -11,7 +11,7 @@ import {State, defaults, action, updater} from "../utils";
   present: undefined,
   future: null
 })
-class Undoer extends State {
+export class Undoable extends State {
   // utility methods for the UI (for enabling/disabling the buttons)
   isUndoable() { return this.past != null; }
   isRedoable() { return this.future != null; }
@@ -61,11 +61,4 @@ class Undoer extends State {
       state = state.redo();
     return state;
   }
-}
-
-export function undoable(createSubState) {
-  const undoer = new Undoer();
-  return undoer.withProps({
-    present: createSubState(action => undoer.doItAction(action)),
-  });
 }

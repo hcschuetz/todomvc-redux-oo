@@ -1,11 +1,9 @@
 import TodoList from './TodoList';
-import { undoable } from './Undoable';
+import { Undoable } from './Undoable';
 
 export default
-undoable(
-  actionWrapper =>
-    new TodoList()
-    .withActionWrapper(actionWrapper)
+new Undoable({
+  present: new TodoList()
     .addTodo({text: "Use Redux", completed: true})
     .addTodo({text: "Use OO"})
-)
+})

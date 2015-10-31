@@ -52,19 +52,10 @@ export function updater(proto, methodName, descr) {
   };
 }
 
-function defAction(proto, name, fn) {
-  Object.defineProperty(proto, name + "Action", {
-    value: fn,
-    enumerable: true,
-    configurable: false,
-    writable: false,
-  });
-}
-
 export function action(proto, methodName) {
-  defAction(proto, methodName, function(...args) {
+  proto[`${methodName}Action`] = function(...args) {
     return { type: methodName, args };
-  });
+  };
 }
 
 // TODO Make usage consistent for @defaults and @settable.
@@ -76,9 +67,14 @@ export function defaults(props) {
 }
 
 export function settable(propName) {
-  return cls => defAction(cls.prototype, `set${capitalize(propName)}`, function(val) {
-    return this.withPropsAction({ [propName]: val });
-  });
+  return cls => {
+    const proto = cls.prototype;
+    const methodName = `set${capitalize(propName)}`;
+    proto[methodName] = function(val) {
+      return this.withProps({ [propName]: val });
+    };
+    action(proto, methodName);
+  };
 }
 
 // Convert a state object with a .reducer(action) method into a standard

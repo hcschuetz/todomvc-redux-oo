@@ -1,9 +1,7 @@
-import {State, defaults, settable, updater} from "../utils";
+import {State, props} from "../utils";
 
-@defaults({
-  text: "",
-  completed: false
+@props({
+  text     : {defaultTo: ""   , settable: true},
+  completed: {defaultTo: false, settable: true},
 })
-@settable("text")
-@settable("completed")
 export default class TodoItem extends State {}

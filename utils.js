@@ -58,22 +58,20 @@ export function action(proto, methodName) {
   };
 }
 
-// TODO Make usage consistent for @defaults and @settable.
-
-export function defaults(props) {
-  return function(cls) {
-    Object.assign(cls.prototype, props);
-  }
-}
-
-export function settable(propName) {
+export function props(decls) {
   return cls => {
     const proto = cls.prototype;
-    const methodName = `set${capitalize(propName)}`;
-    proto[methodName] = function(val) {
-      return this.withProps({ [propName]: val });
-    };
-    action(proto, methodName);
+    for (const name in decls) {
+      const decl = decls[name];
+      proto[name] = decl.defaultTo;
+      if (decl.settable) {
+        const methodName = `set${capitalize(name)}`;
+        proto[methodName] = function(val) {
+          return this.withProps({ [name]: val });
+        };
+        action(proto, methodName);
+      }
+    }
   };
 }
 

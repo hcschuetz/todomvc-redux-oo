@@ -1,9 +1,9 @@
-import {State, defaults, action, updater} from "../utils";
+import {State, props, action, updater} from "../utils";
 import TodoItem from "./TodoItem";
 
-@defaults({
-  items: [],
-  nextId: 0
+@props({
+  items : {defaultTo: []},
+  nextId: {defaultTo: 0},
 })
 export default class TodoList extends State {
 

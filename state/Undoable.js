@@ -4,12 +4,12 @@
 // whistles, which are not implemented here since they're unrelated to
 // the question of using an OO style.
 
-import {State, defaults, action, updater} from "../utils";
+import {State, props, action, updater} from "../utils";
 
-@defaults({
-  past: null,
-  present: undefined,
-  future: null
+@props({
+  past: {defaultTo: null},
+  present: {defaultTo: undefined},
+  future: {defaultTo: null},
 })
 export default class Undoable extends State {
   // utility methods for the UI (for enabling/disabling the buttons)

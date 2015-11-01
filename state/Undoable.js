@@ -4,7 +4,7 @@
 // whistles, which are not implemented here since they're unrelated to
 // the question of using an OO style.
 
-import {State, props, action, updater} from "../utils";
+import {State, props, action, updater} from "../redux-oo";
 
 @props({
   past: {proto: null},

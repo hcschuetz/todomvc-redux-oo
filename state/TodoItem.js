@@ -1,4 +1,4 @@
-import {State, props} from "../utils";
+import {State, props} from "../redux-oo";
 
 @props({
   text     : {proto: ""   , settable: true},

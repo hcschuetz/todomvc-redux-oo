@@ -1,4 +1,4 @@
-import {State, props, action, updater} from "../utils";
+import {State, props, action, updater} from "../redux-oo";
 import TodoItem from "./TodoItem";
 
 @props({

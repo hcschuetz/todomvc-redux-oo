@@ -1,4 +1,4 @@
-// This should go to a generic utility library.
+// This should go to a separate package.
 
 export class State {
   constructor(props) {

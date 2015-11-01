@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { reduceFrom } from '../utils';
+import { reduceFrom } from '../redux-oo';
 import initialState from '../state/initial';
 import jsConverter from '../jsConverterInstance';
 

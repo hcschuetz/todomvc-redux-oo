@@ -1,4 +1,4 @@
-// This should go to a library just like utils.js
+// This should go to a library just like redux-oo.js
 
 /*
 An instance of JSConverter converts between class instances and "plain"

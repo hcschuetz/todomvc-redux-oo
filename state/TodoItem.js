@@ -6,12 +6,4 @@ import {State, defaults, settable, updater} from "../utils";
 })
 @settable("text")
 @settable("completed")
-export default class TodoItem extends State {
-
-  // utility function
-  @updater
-  setCompleted(u, completed) {
-    u.completed = completed;
-  }
-
-}
+export default class TodoItem extends State {}

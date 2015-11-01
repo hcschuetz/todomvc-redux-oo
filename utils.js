@@ -63,7 +63,7 @@ export function props(decls) {
     const proto = cls.prototype;
     for (const name in decls) {
       const decl = decls[name];
-      proto[name] = decl.defaultTo;
+      proto[name] = decl.proto;
       if (decl.settable) {
         const methodName = `set${capitalize(name)}`;
         proto[methodName] = function(val) {

@@ -7,9 +7,9 @@
 import {State, props, action, updater} from "../utils";
 
 @props({
-  past: {defaultTo: null},
-  present: {defaultTo: undefined},
-  future: {defaultTo: null},
+  past: {proto: null},
+  present: {proto: undefined},
+  future: {proto: null},
 })
 export default class Undoable extends State {
   // utility methods for the UI (for enabling/disabling the buttons)

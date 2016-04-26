@@ -11,8 +11,8 @@ A first version used quite a bit of boilerplate code.  In later versions
 some utilities have been introduced to reduce the amount of boilerplate
 code.
 
-Once `utils.js` is in a reasonable shape it will go to its own
-repository.  (`redux-oo` would be an appropriate name.)
+Once `redux-oo.js` is in a reasonable shape it should go to its own
+repository.
 
 Notes:
 - Attaching code to data (to the state) makes hot reloading harder: New
